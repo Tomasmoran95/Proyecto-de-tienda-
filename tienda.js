@@ -1,78 +1,80 @@
-// ================================
-//   SIMULADOR DE TIENDA (JS)
-// ================================
+document.addEventListener("DOMContentLoaded", () => {
 
-// Catálogo de productos
-const productos = [
-  { id: 1, nombre: "Camisa", precio: 15 },
-  { id: 2, nombre: "Pantalón", precio: 25 },
-  { id: 3, nombre: "Zapatos", precio: 40 },
-  { id: 4, nombre: "Gorra", precio: 10 }
-];
+  const productos = [
+    { id: 1, nombre: "Camisa", precio: 15 },
+    { id: 2, nombre: "Pantalón", precio: 25 },
+    { id: 3, nombre: "Zapatos", precio: 40 },
+    { id: 4, nombre: "Gorra", precio: 10 }
+  ];
 
-// Carrito donde se guardarán las compras
-let carrito = [];
+  let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
-// Función para mostrar el catálogo al usuario
-function mostrarCatalogo() {
-  let mensaje = "PRODUCTOS DISPONIBLES:\n";
-  
-  for (let producto of productos) {
-    mensaje += `${producto.id}. ${producto.nombre} - $${producto.precio}\n`;
+  const catalogo = document.getElementById("catalogo");
+  const carritoHTML = document.getElementById("carrito");
+  const totalHTML = document.getElementById("total");
+  const btnVaciar = document.getElementById("vaciar");
+
+  function mostrarCatalogo() {
+    catalogo.innerHTML = "";
+    productos.forEach(producto => {
+      const div = document.createElement("div");
+      const p = document.createElement("p");
+      p.textContent = `${producto.nombre} - $${producto.precio}`;
+      const button = document.createElement("button");
+      button.textContent = "Agregar";
+      button.addEventListener("click", () => agregarAlCarrito(producto.id));
+      div.appendChild(p);
+      div.appendChild(button);
+      catalogo.appendChild(div);
+    });
   }
 
-  alert(mensaje);
-}
-
-// Función para agregar un producto al carrito
-function agregarAlCarrito() {
-  let id = prompt("Ingresa el ID del producto que deseas comprar:");
-  
-  // Convertimos a número
-  id = Number(id);
-
-  // Validamos que exista
-  let producto = productos.find(item => item.id === id);
-
-  if (producto) {
+  function agregarAlCarrito(id) {
+    const producto = productos.find(p => p.id === id);
+    if (!producto) return;
     carrito.push(producto);
-    alert(`Has agregado: ${producto.nombre}`);
-    console.log("Carrito actual:", carrito);
-  } else {
-    alert("Producto no válido. Intenta nuevamente.");
-  }
-}
-
-// Función para calcular el total del carrito
-function calcularTotal() {
-  let total = 0;
-
-  for (let item of carrito) {
-    total += item.precio;
+    guardarCarrito();
+    mostrarCarrito();
   }
 
-  return total;
-}
+  function mostrarCarrito() {
+    carritoHTML.innerHTML = "";
+    if (carrito.length === 0) {
+      carritoHTML.innerHTML = "<li>El carrito está vacío</li>";
+    } else {
+      carrito.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.textContent = `${item.nombre} - $${item.precio}`;
+        const btnEliminar = document.createElement("button");
+        btnEliminar.textContent = "X";
+        btnEliminar.addEventListener("click", () => eliminarProducto(index));
+        li.appendChild(btnEliminar);
+        carritoHTML.appendChild(li);
+      });
+    }
+    totalHTML.textContent = "Total: $" + calcularTotal();
+  }
 
-// ================================
-//        FLUJO PRINCIPAL
-// ================================
+  function calcularTotal() {
+    return carrito.reduce((acc, item) => acc + item.precio, 0);
+  }
 
-alert("¡Bienvenido a la Tienda Virtual!");
+  function guardarCarrito() {
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+  }
 
-while (true) {
+  function eliminarProducto(index) {
+    carrito.splice(index, 1);
+    guardarCarrito();
+    mostrarCarrito();
+  }
+
+  btnVaciar.addEventListener("click", () => {
+    carrito = [];
+    guardarCarrito();
+    mostrarCarrito();
+  });
+
   mostrarCatalogo();
-  agregarAlCarrito();
-
-  let continuar = confirm("¿Quieres agregar otro producto?");
-  if (!continuar) break;
-}
-
-// Mostrar total final
-let total = calcularTotal();
-
-if (carrito.length > 0) {
-  alert(`Gracias por tu compra.\nHas adquirido ${carrito.length} productos.\nTotal a pagar: $${total}`);
-} else {
-  alert("No agregaste productos. ¡Vuelve pronto!");
-}
+  mostrarCarrito();
+});
