@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "nombre": "Camisa",
+    "precio": 15,
+    "imagen": "https://images.pexels.com/photos/428338/pexels-photo-428338.jpeg?auto=compress&cs=tinysrgb&w=600"
+  },
+  {
+    "id": 2,
+    "nombre": "Pantalón",
+    "precio": 25,
+    "imagen": "https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=600"
+  },
+  {
+    "id": 3,
+    "nombre": "Zapatos",
+    "precio": 40,
+    "imagen": "https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=600"
+  },
+  {
+    "id": 4,
+    "nombre": "Gorra",
+    "precio": 10,
+    "imagen": "https://images.pexels.com/photos/1124465/pexels-photo-1124465.jpeg?auto=compress&w=600"
+  }
+]
