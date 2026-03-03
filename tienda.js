@@ -147,6 +147,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const direccion = document.getElementById("direccion").value.trim();
     const tarjeta = document.getElementById("tarjeta").value.trim();
     const cvv = document.getElementById("cvv").value.trim();
+    
+    
 
     if (nombre.length < 3) return mostrarError("El nombre debe tener al menos 3 caracteres");
 
@@ -158,6 +160,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!/^\d{16}$/.test(tarjeta)) return mostrarError("La tarjeta debe tener 16 dígitos numéricos");
 
     if (!/^\d{3}$/.test(cvv)) return mostrarError("El CVV debe tener 3 dígitos");
+
+    
 
     // 🔹 Guardar cliente en localStorage
     const cliente = { nombre, email, direccion };
