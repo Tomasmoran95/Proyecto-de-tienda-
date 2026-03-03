@@ -147,27 +147,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const direccion = document.getElementById("direccion").value.trim();
     const tarjeta = document.getElementById("tarjeta").value.trim();
     const cvv = document.getElementById("cvv").value.trim();
-    
-    
 
-    if (nombre.length < 3) return mostrarError("El nombre debe tener al menos 3 caracteres");
+    // ✅ Validar que ningún campo esté vacío
+    if (!nombre || !email || !direccion || !tarjeta || !cvv) {
+      return mostrarError("Todos los campos son obligatorios");
+    }
+
+    if (nombre.length < 3) 
+      return mostrarError("El nombre debe tener al menos 3 caracteres");
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) return mostrarError("Correo electrónico inválido");
+    if (!emailRegex.test(email)) 
+      return mostrarError("Correo electrónico inválido");
 
-    if (direccion.length < 5) return mostrarError("Dirección demasiado corta");
+    if (direccion.length < 5) 
+      return mostrarError("Dirección demasiado corta");
 
-    if (!/^\d{16}$/.test(tarjeta)) return mostrarError("La tarjeta debe tener 16 dígitos numéricos");
+    if (!/^\d{16}$/.test(tarjeta)) 
+      return mostrarError("La tarjeta debe tener 16 dígitos numéricos");
 
-    if (!/^\d{3}$/.test(cvv)) return mostrarError("El CVV debe tener 3 dígitos");
+    if (!/^\d{3}$/.test(cvv)) 
+      return mostrarError("El CVV debe tener 3 dígitos");
 
-    
-
-    // 🔹 Guardar cliente en localStorage
     const cliente = { nombre, email, direccion };
     localStorage.setItem("cliente", JSON.stringify(cliente));
 
-    // 🔹 Mostrar alerta con datos del usuario
     Swal.fire({
       title: "Compra realizada",
       html: `
@@ -179,7 +183,6 @@ document.addEventListener("DOMContentLoaded", () => {
       icon: "success"
     });
 
-    // 🔹 Generar ticket visual en pantalla
     mostrarTicket(cliente);
 
     carrito = [];
